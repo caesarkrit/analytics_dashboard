@@ -3,6 +3,8 @@ import * as go from "gojs";
 import { ReactDiagram } from "gojs-react";
 import Tooltip from "@mui/material/Tooltip";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import RouterIcon from "@mui/icons-material/Router";
+import ApartmentIcon from "@mui/icons-material/Apartment";
 import "./home.css";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -119,6 +121,7 @@ export default function Home() {
     {
       floorName: "Floor 1",
       color: "#ebcbb7",
+      number: 1,
       buildings: [
         {
           number: 1,
@@ -155,6 +158,7 @@ export default function Home() {
     {
       floorName: "Floor 2",
       color: "#edcdc2",
+      number: 2,
       buildings: [
         {
           number: 6,
@@ -356,7 +360,7 @@ export default function Home() {
                             : defaultTheme.palette.primary.main,
                       }}
                     >
-                      Router 1
+                      <RouterIcon sx={{ mr: 1 }} />1
                     </Button>
 
                     <Button
@@ -370,7 +374,7 @@ export default function Home() {
                             : defaultTheme.palette.primary.main,
                       }}
                     >
-                      Router 2
+                      <RouterIcon sx={{ mr: 1 }} />2
                     </Button>
                   </Box>
                   <Box
@@ -398,8 +402,8 @@ export default function Home() {
                           <Box
                             key={building.number}
                             sx={{
-                              width: 150, // Increased box size
-                              height: 70, // Increased box size
+                              width: 130, // Increased box size
+                              height: 60, // Increased box size
                               backgroundColor,
                               color: "black",
                               fontFamily: "sans-serif",
@@ -413,12 +417,13 @@ export default function Home() {
                                 selectedBuilding?.number === building.number
                                   ? "3px solid black"
                                   : "none",
+                              borderRadius: "5px",
                             }}
                             onClick={() => handleBuildingClick(building)}
                             onMouseEnter={() => setHoveredBuilding(building)}
                             onMouseLeave={() => setHoveredBuilding(null)}
                           >
-                            <AccountBalanceIcon sx={{ mr: 1 }} /> Building{" "}
+                            <AccountBalanceIcon sx={{ mr: 1 }} />
                             {building.number}
                           </Box>
                         );
@@ -549,7 +554,7 @@ export default function Home() {
                               onMouseEnter={() => setHoveredBuilding(building)}
                               onMouseLeave={() => setHoveredBuilding(null)}
                             >
-                              <AccountBalanceIcon sx={{ mr: 1 }} /> Building{" "}
+                              <AccountBalanceIcon sx={{ mr: 1 }} />
                               {building?.number}
                             </Box>
                           </Tooltip>
@@ -584,8 +589,8 @@ export default function Home() {
                     {floorsArray.map((floor) => (
                       <Box
                         sx={{
-                          width: 150, // Increased box size
-                          height: 70, // Increased box size
+                          width: 120, // Increased box size
+                          height: 50, // Increased box size
                           backgroundColor: `${floor.color}`, // Random background color
                           color: "black",
                           fontFamily: "sans-serif",
@@ -600,10 +605,11 @@ export default function Home() {
                             selectedFloor?.floorName === floor.floorName
                               ? "3px solid black"
                               : "none",
+                          borderRadius: "5px",
                         }}
                         onClick={() => handleFloorClick(floor)}
                       >
-                        {floor.floorName}
+                        <ApartmentIcon sx={{ mr: 1 }} /> {floor.number}
                       </Box>
                     ))}
                   </Box>
