@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as go from "gojs";
 import { ReactDiagram } from "gojs-react";
-
+import Tooltip from "@mui/material/Tooltip";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import "./home.css";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -121,31 +122,31 @@ export default function Home() {
       buildings: [
         {
           number: 1,
-          color: "#94776d",
+          color: "#51e879",
           label: "Building 1",
           ip: "10.20.20.0/18",
         },
         {
           number: 2,
-          color: "#bab484",
+          color: "#63d4e0",
           label: "Building 2",
           ip: "10.20.20.0/19",
         },
         {
           number: 3,
-          color: "#98ba84",
+          color: "#a6c6ed",
           label: "Building 3",
           ip: "10.20.20.0/20",
         },
         {
           number: 4,
-          color: "#6f7a68",
+          color: "#cb9bde",
           label: "Building 4",
           ip: "10.20.20.0/21",
         },
         {
           number: 5,
-          color: "#91abaa",
+          color: "#e39ae2",
           label: "Building 5",
           ip: "10.20.20.0/22",
         },
@@ -157,31 +158,31 @@ export default function Home() {
       buildings: [
         {
           number: 6,
-          color: "#d9bdd4",
+          color: "#f0d681",
           label: "Building 1",
           ip: "10.20.20.0/23",
         },
         {
           number: 7,
-          color: "#e3cfd9",
+          color: "#dee884",
           label: "Building 2",
           ip: "10.20.20.0/24",
         },
         {
           number: 8,
-          color: "#f0baa3",
+          color: "#b8fa89",
           label: "Building 3",
           ip: "10.20.20.0/25",
         },
         {
           number: 9,
-          color: "#a16f5a",
+          color: "#8cfad5",
           label: "Building 4",
           ip: "10.20.20.0/26",
         },
         {
           number: 10,
-          color: "#89c797",
+          color: "#e0809b",
           label: "Building 5",
           ip: "10.20.20.0/27",
         },
@@ -417,7 +418,8 @@ export default function Home() {
                             onMouseEnter={() => setHoveredBuilding(building)}
                             onMouseLeave={() => setHoveredBuilding(null)}
                           >
-                            Building {building.number}
+                            <AccountBalanceIcon sx={{ mr: 1 }} /> Building{" "}
+                            {building.number}
                           </Box>
                         );
                       })}
@@ -501,30 +503,58 @@ export default function Home() {
                     }}
                   >
                     {buildings.length !== 0 &&
-                      buildings.map((building) => (
-                        <Box
-                          key={building?.number}
-                          sx={{
-                            width: 150, // Increased box size
-                            height: 70, // Increased box size
-                            backgroundColor: `${building?.color}`, // Random background color
-                            color: "black",
-                            fontFamily: "sans-serif",
-
-                            fontWeight: "bold",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            margin: "5px",
-                            cursor: "pointer",
-                          }}
-                          // onClick={() =>
-                          //   handleBuildingClick(`Building ${building.number}`)
-                          // }
-                        >
-                          Building {building?.number}
-                        </Box>
-                      ))}
+                      buildings.map((building) => {
+                        let backgroundColor;
+                        if (!hoveredBuilding) backgroundColor = building.color;
+                        else if (
+                          hoveredBuilding &&
+                          hoveredBuilding === building
+                        ) {
+                          backgroundColor = building.color; // Set the background color to the original color if the building is hovered
+                        } else {
+                          backgroundColor = "grey"; // Set the background color to grey if no building is hovered or the building is not hovered
+                        }
+                        return (
+                          <Tooltip
+                            key={building?.number}
+                            title={
+                              <div
+                                style={{ fontSize: "18px", padding: "10px" }}
+                              >
+                                <div>Building Number: {building?.number}</div>
+                                <div>
+                                  Subnet {building?.number}:{" "}
+                                  {hoveredBuilding?.ip}
+                                </div>
+                                {/* Add more lines as needed */}
+                              </div>
+                            }
+                            arrow
+                            placement="top"
+                          >
+                            <Box
+                              sx={{
+                                width: 150,
+                                height: 70,
+                                backgroundColor,
+                                color: "black",
+                                fontFamily: "sans-serif",
+                                fontWeight: "bold",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                margin: "5px",
+                                cursor: "pointer",
+                              }}
+                              onMouseEnter={() => setHoveredBuilding(building)}
+                              onMouseLeave={() => setHoveredBuilding(null)}
+                            >
+                              <AccountBalanceIcon sx={{ mr: 1 }} /> Building{" "}
+                              {building?.number}
+                            </Box>
+                          </Tooltip>
+                        );
+                      })}
                   </Box>
                 </Paper>
               </Grid>
