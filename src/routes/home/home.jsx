@@ -360,7 +360,7 @@ export default function Home() {
                             : defaultTheme.palette.primary.main,
                       }}
                     >
-                      <RouterIcon sx={{ mr: 1 }} />1
+                      Router 1
                     </Button>
 
                     <Button
@@ -374,7 +374,7 @@ export default function Home() {
                             : defaultTheme.palette.primary.main,
                       }}
                     >
-                      <RouterIcon sx={{ mr: 1 }} />2
+                      Router 2
                     </Button>
                   </Box>
                   <Box
@@ -423,8 +423,7 @@ export default function Home() {
                             onMouseEnter={() => setHoveredBuilding(building)}
                             onMouseLeave={() => setHoveredBuilding(null)}
                           >
-                            <AccountBalanceIcon sx={{ mr: 1 }} />
-                            {building.number}
+                            Building {building.number}
                           </Box>
                         );
                       })}
@@ -554,8 +553,7 @@ export default function Home() {
                               onMouseEnter={() => setHoveredBuilding(building)}
                               onMouseLeave={() => setHoveredBuilding(null)}
                             >
-                              <AccountBalanceIcon sx={{ mr: 1 }} />
-                              {building?.number}
+                              Building {building?.number}
                             </Box>
                           </Tooltip>
                         );
@@ -609,7 +607,7 @@ export default function Home() {
                         }}
                         onClick={() => handleFloorClick(floor)}
                       >
-                        <ApartmentIcon sx={{ mr: 1 }} /> {floor.number}
+                        {floor.floorName}
                       </Box>
                     ))}
                   </Box>
