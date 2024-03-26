@@ -223,6 +223,41 @@ export default function Home() {
     setRouterData(null);
   };
 
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  // Function to handle hover events
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  // Function to handle mouse leave events
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setCoordinates(0, 0);
+  };
+
+  // Define the style object for the component
+  const mapStyle = {
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    // color: isHovered ? "white" : "black",
+    backgroundImage: isHovered
+      ? 'url("https://www.advancedcustomfields.com/wp-content/uploads/2013/11/acf-google-map-field-interface.png")'
+      : "none",
+  };
+
+  const [coordinates, setCoordinates] = React.useState({ x: 0, y: 0 });
+
+  // Function to handle mouse move events
+  const handleMouseMove = (event) => {
+    const { left, top, width, height } = event.target.getBoundingClientRect();
+    const x = event.clientX - left;
+    const y = event.clientY - top;
+    setCoordinates({ x, y });
+  };
+
+  // console.log(coordinates);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -396,7 +431,6 @@ export default function Home() {
                           backgroundColor = building.color; // Set the background color to the original color if the building is hovered
                         } else {
                           backgroundColor = "grey"; // Set the background color to grey if no building is hovered or the building is not hovered
-                          console.log("not hovered");
                         }
                         return (
                           <Box
@@ -487,79 +521,107 @@ export default function Home() {
               </Grid>
 
               <Grid item xs={12}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    height: 200,
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
+                <Tooltip
+                  title={
+                    <div
+                      style={{
+                        fontSize: "18px",
+                        padding: "10px",
+                      }}
+                    >
+                      <div>
+                        The x and y coordinates of the image are {coordinates.x}{" "}
+                        and {coordinates.y}{" "}
+                      </div>
+                      {/* Add more lines as needed */}
+                    </div>
+                  }
+                  arrow
+                  placement="top"
                 >
-                  <Typography variant="h5" sx={{ mb: 2 }}>
-                    Campus Map{" "}
-                  </Typography>
-                  <Box
+                  <Paper
                     sx={{
-                      mt: 2,
-
+                      p: 2,
+                      height: 200,
                       display: "flex",
-                      justifyContent: "space-between",
+                      flexDirection: "column",
                     }}
+                    className="campus-map"
+                    style={mapStyle}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseMove={handleMouseMove}
+                    onClick={() => console.log("image click", coordinates)}
                   >
-                    {buildings.length !== 0 &&
-                      buildings.map((building) => {
-                        let backgroundColor;
-                        if (!hoveredBuilding) backgroundColor = building.color;
-                        else if (
-                          hoveredBuilding &&
-                          hoveredBuilding === building
-                        ) {
-                          backgroundColor = building.color; // Set the background color to the original color if the building is hovered
-                        } else {
-                          backgroundColor = "grey"; // Set the background color to grey if no building is hovered or the building is not hovered
-                        }
-                        return (
-                          <Tooltip
-                            key={building?.number}
-                            title={
-                              <div
-                                style={{ fontSize: "18px", padding: "10px" }}
-                              >
-                                <div>Building Number: {building?.number}</div>
-                                <div>
-                                  Subnet {building?.number}:{" "}
-                                  {hoveredBuilding?.ip}
+                    <Typography variant="h5" sx={{ mb: 2 }}>
+                      Campus Map{" "}
+                    </Typography>
+                    <Box
+                      sx={{
+                        mt: 2,
+
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {buildings.length !== 0 &&
+                        buildings.map((building) => {
+                          let backgroundColor;
+                          if (!hoveredBuilding)
+                            backgroundColor = building.color;
+                          else if (
+                            hoveredBuilding &&
+                            hoveredBuilding === building
+                          ) {
+                            backgroundColor = building.color; // Set the background color to the original color if the building is hovered
+                          } else {
+                            backgroundColor = "grey"; // Set the background color to grey if no building is hovered or the building is not hovered
+                          }
+                          return (
+                            <Tooltip
+                              key={building?.number}
+                              title={
+                                <div
+                                  style={{ fontSize: "18px", padding: "10px" }}
+                                >
+                                  <div>Building Number: {building?.number}</div>
+                                  <div>
+                                    Subnet {building?.number}:{" "}
+                                    {hoveredBuilding?.ip}
+                                  </div>
+                                  {/* Add more lines as needed */}
                                 </div>
-                                {/* Add more lines as needed */}
-                              </div>
-                            }
-                            arrow
-                            placement="top"
-                          >
-                            <Box
-                              sx={{
-                                width: 150,
-                                height: 70,
-                                backgroundColor,
-                                color: "black",
-                                fontFamily: "sans-serif",
-                                fontWeight: "bold",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                margin: "5px",
-                                cursor: "pointer",
-                              }}
-                              onMouseEnter={() => setHoveredBuilding(building)}
-                              onMouseLeave={() => setHoveredBuilding(null)}
+                              }
+                              arrow
+                              placement="top"
                             >
-                              Building {building?.number}
-                            </Box>
-                          </Tooltip>
-                        );
-                      })}
-                  </Box>
-                </Paper>
+                              <Box
+                                sx={{
+                                  width: 150,
+                                  height: 70,
+                                  backgroundColor,
+                                  color: "black",
+                                  fontFamily: "sans-serif",
+                                  fontWeight: "bold",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  margin: "5px",
+                                  cursor: "pointer",
+                                }}
+                                onMouseEnter={() =>
+                                  setHoveredBuilding(building)
+                                }
+                                onMouseLeave={() => setHoveredBuilding(null)}
+                              >
+                                Building {building?.number}
+                              </Box>
+                            </Tooltip>
+                          );
+                        })}
+                    </Box>
+                  </Paper>
+                </Tooltip>
               </Grid>
             </Grid>
             <Grid container spacing={2} justifyContent="space-between">
