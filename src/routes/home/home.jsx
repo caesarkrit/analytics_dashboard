@@ -9,7 +9,7 @@ import "./home.css";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
+import Box from "@mui/material/Box"; 
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
@@ -24,6 +24,7 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import CytoscapeComponent from './cytoscape';
 import {
   mainListItems,
   secondaryListItems,
@@ -154,44 +155,7 @@ export default function Home() {
           ip: "10.20.20.0/22",
         },
       ],
-    },
-    {
-      floorName: "Floor 2",
-      color: "#edcdc2",
-      number: 2,
-      buildings: [
-        {
-          number: 6,
-          color: "#f0d681",
-          label: "Building 1",
-          ip: "10.20.20.0/23",
-        },
-        {
-          number: 7,
-          color: "#dee884",
-          label: "Building 2",
-          ip: "10.20.20.0/24",
-        },
-        {
-          number: 8,
-          color: "#b8fa89",
-          label: "Building 3",
-          ip: "10.20.20.0/25",
-        },
-        {
-          number: 9,
-          color: "#8cfad5",
-          label: "Building 4",
-          ip: "10.20.20.0/26",
-        },
-        {
-          number: 10,
-          color: "#e0809b",
-          label: "Building 5",
-          ip: "10.20.20.0/27",
-        },
-      ],
-    },
+    }
   ];
   const [buildings, setBuildings] = React.useState(floorsArray[0]?.buildings);
   const [selectedFloor, setSelectedFloor] = React.useState(floorsArray[0]);
@@ -520,6 +484,9 @@ export default function Home() {
                 </Paper>
               </Grid>
 
+
+
+
               <Grid item xs={12}>
                 <Tooltip
                   title={
@@ -623,74 +590,24 @@ export default function Home() {
                   </Paper>
                 </Tooltip>
               </Grid>
-            </Grid>
-            <Grid container spacing={2} justifyContent="space-between">
-              <Grid item xs={12} md={5} lg={5}>
+
                 <Paper
                   sx={{
                     p: 2,
+                    height: 'calc(65vh - 64px)',
                     display: "flex",
                     flexDirection: "column",
-                    height: 340,
                   }}
                 >
-                  {" "}
                   <Typography variant="h5" sx={{ mb: 2 }}>
-                    Wireless Map{" "}
+                    Building connections
                   </Typography>
-                  <Box
-                    sx={{
-                      mt: 2,
-
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {floorsArray.map((floor) => (
-                      <Box
-                        sx={{
-                          width: 120, // Increased box size
-                          height: 50, // Increased box size
-                          backgroundColor: `${floor.color}`, // Random background color
-                          color: "black",
-                          fontFamily: "sans-serif",
-
-                          fontWeight: "bold",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          margin: "5px",
-                          cursor: "pointer",
-                          border:
-                            selectedFloor?.floorName === floor.floorName
-                              ? "3px solid black"
-                              : "none",
-                          borderRadius: "5px",
-                        }}
-                        onClick={() => handleFloorClick(floor)}
-                      >
-                        {floor.floorName}
-                      </Box>
-                    ))}
-                  </Box>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={5} lg={5}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 340,
-                  }}
-                >
-                  {" "}
-                  <Typography variant="h5" sx={{ mb: 2 }}>
-                    Closet Idf{" "}
-                  </Typography>
+                  {/* Here is the Cytoscape graph */}
+                  <CytoscapeComponent />
                 </Paper>
               </Grid>
             </Grid>
+
           </Container>
         </Box>
       </Box>

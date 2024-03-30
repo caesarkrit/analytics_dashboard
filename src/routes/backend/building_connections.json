@@ -1,0 +1,58 @@
+{
+    "version": "1.0",
+    "buildings": [
+        {
+            "buildingId": "fb234123-1435-234",
+            "nodes": [
+                {
+                    "deviceType": "Cisco Catalyst 9300 Switch",
+                    "label": "n-m3sw",
+                    "id": "71425e5c-3c0f-4032"
+                }
+            ],
+            "links": [
+                {
+                    "source": "4f4195d1-fed9-4f2",
+                    "target": "71425e5c-3c0f-",
+                    "portSpeed": "2500000",
+                    "status": "up"
+                },
+                {
+                    "source": "71425e5c-3c0f-",
+                    "target": "4f4195d1-fed9-4f2",
+                    "portSpeed": "2500000",
+                    "status": "up"
+                }
+            ]
+        },
+        {
+            "buildingId": "12345",
+            "nodes": [
+                {
+                    "deviceType": "Cisco Catalyst 9360 Switch",
+                    "label": "n-masdasd",
+                    "id": "abcde"
+                },
+                {
+                    "deviceType": "Cisco Catalyst 9360 Switch",
+                    "label": "n-masdasd",
+                    "id": "987654"
+                }
+            ],
+            "links": [
+                {
+                    "source": "abcde",
+                    "target": "987654",
+                    "portSpeed": "2500000",
+                    "status": "up"
+                },
+                {
+                    "source": "abcde",
+                    "target": "987654",
+                    "portSpeed": "1000000",
+                    "status": "up"
+                }
+            ]
+        }
+    ]
+}
