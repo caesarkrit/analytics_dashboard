@@ -1,0 +1,36 @@
+{
+    "version": "1.0",
+    "buildings": [
+        {
+            "buildingId": "12345",
+            "nodes": [
+                {
+                    "deviceType": "Cisco Catalyst 9360 Switch",
+                    "label": "n-masdasd",
+                    "id": "abcde"
+                },
+                {
+                    "deviceType": "Cisco Catalyst 9360 Switch",
+                    "label": "n-masdasd",
+                    "id": "987654"
+                }
+            ],
+            "links": [
+                {
+                    "source": "abcde",
+                    "target": "987654",
+                    "portSpeed": "2500000",
+                    "status": "up",
+                    "tag": "floor 1"
+                },
+                {
+                    "source": "abcde",
+                    "target": "987654",
+                    "portSpeed": "1000000",
+                    "status": "up",
+                    "tag": "floor 1"
+                }
+            ]
+        }
+    ]
+}

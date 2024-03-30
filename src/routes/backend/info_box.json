@@ -1,0 +1,21 @@
+{
+    "version": "1.0",
+    "devices": [
+        {
+            "id": "71425e5c-3c0f-4032",
+            "deviceType": "Cisco Catalyst 9300 Switch",
+            "label": "n-m3sw",
+            "ip": "10.48.252.113",
+            "softwareVersion": "17.3.5",
+            "siteId": "fb234123-1435-234"
+        },
+        {
+            "id": "71425e5c-3c0f-4032",
+            "deviceType": "Cisco Catalyst 9360 Switch",
+            "label": "n-masdasd",
+            "ip": "10.48.232.112",
+            "softwareVersion": "17.3.15",
+            "siteId": "fb234123-1435-234-123"
+        }
+    ]
+}

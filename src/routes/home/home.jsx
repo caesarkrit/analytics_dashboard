@@ -24,7 +24,7 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import campusMapImage from './image.JPG';
+import CytoscapeComponent from './cytoscape';
 import {
   mainListItems,
   secondaryListItems,
@@ -32,41 +32,6 @@ import {
 // import GraphComponent from "../../components/graphComponent/graphComponent";
 
 const drawerWidth = 240;
-
-
-const invisibleButtonStyle = {
-  position: 'absolute',
-  width: '50px', // Set width
-  height: '50px', // Set height
-  background: 'rgba(255, 0, 0, 0.5)', // Semi-transparent background for testing
-  border: 'none',
-  cursor: 'pointer',
-};
-
-const ClickableBuilding = ({ building, onBuildingClick, hoveredBuilding, setHoveredBuilding }) => {
-  const handleMouseEnter = () => {
-    setHoveredBuilding(building.number); // Or use another unique identifier of the building
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredBuilding(null);
-  };
-
-  return (
-    <button
-      style={{
-        ...invisibleButtonStyle,
-        left: building.mapX, // X coordinate on the image
-        top: building.mapY, // Y coordinate on the image
-        // Apply styles based on hover state
-        backgroundColor: hoveredBuilding === building.number ? 'rgba(255, 0, 0, 0.5)' : 'transparent',
-      }}
-      onClick={() => onBuildingClick(building)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    />
-  );
-};
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -190,44 +155,7 @@ export default function Home() {
           ip: "10.20.20.0/22",
         },
       ],
-    },
-    {
-      floorName: "Floor 2",
-      color: "#edcdc2",
-      number: 2,
-      buildings: [
-        {
-          number: 6,
-          color: "#f0d681",
-          label: "Building 1",
-          ip: "10.20.20.0/23",
-        },
-        {
-          number: 7,
-          color: "#dee884",
-          label: "Building 2",
-          ip: "10.20.20.0/24",
-        },
-        {
-          number: 8,
-          color: "#b8fa89",
-          label: "Building 3",
-          ip: "10.20.20.0/25",
-        },
-        {
-          number: 9,
-          color: "#8cfad5",
-          label: "Building 4",
-          ip: "10.20.20.0/26",
-        },
-        {
-          number: 10,
-          color: "#e0809b",
-          label: "Building 5",
-          ip: "10.20.20.0/27",
-        },
-      ],
-    },
+    }
   ];
   const [buildings, setBuildings] = React.useState(floorsArray[0]?.buildings);
   const [selectedFloor, setSelectedFloor] = React.useState(floorsArray[0]);
@@ -259,6 +187,40 @@ export default function Home() {
     setRouterData(null);
   };
 
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  // Function to handle hover events
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  // Function to handle mouse leave events
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setCoordinates(0, 0);
+  };
+
+  // Define the style object for the component
+  const mapStyle = {
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    // color: isHovered ? "white" : "black",
+    backgroundImage: isHovered
+      ? 'url("https://www.advancedcustomfields.com/wp-content/uploads/2013/11/acf-google-map-field-interface.png")'
+      : "none",
+  };
+
+  const [coordinates, setCoordinates] = React.useState({ x: 0, y: 0 });
+
+  // Function to handle mouse move events
+  const handleMouseMove = (event) => {
+    const { left, top, width, height } = event.target.getBoundingClientRect();
+    const x = event.clientX - left;
+    const y = event.clientY - top;
+    setCoordinates({ x, y });
+  };
+
+  // console.log(coordinates);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -396,7 +358,7 @@ export default function Home() {
                             : defaultTheme.palette.primary.main,
                       }}
                     >
-                      <RouterIcon sx={{ mr: 1 }} />1
+                      Router 1
                     </Button>
 
                     <Button
@@ -410,7 +372,7 @@ export default function Home() {
                             : defaultTheme.palette.primary.main,
                       }}
                     >
-                      <RouterIcon sx={{ mr: 1 }} />2
+                      Router 2
                     </Button>
                   </Box>
                   <Box
@@ -459,8 +421,7 @@ export default function Home() {
                             onMouseEnter={() => setHoveredBuilding(building)}
                             onMouseLeave={() => setHoveredBuilding(null)}
                           >
-                            <AccountBalanceIcon sx={{ mr: 1 }} />
-                            {building.number}
+                            Building {building.number}
                           </Box>
                         );
                       })}
@@ -523,176 +484,140 @@ export default function Home() {
                 </Paper>
               </Grid>
 
+
+
+
+              <Grid item xs={12}>
+                <Tooltip
+                  title={
+                    <div
+                      style={{
+                        fontSize: "18px",
+                        padding: "10px",
+                      }}
+                    >
+                      <div>
+                        The x and y coordinates of the image are {coordinates.x}{" "}
+                        and {coordinates.y}{" "}
+                      </div>
+                      {/* Add more lines as needed */}
+                    </div>
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <Paper
+                    sx={{
+                      p: 2,
+                      height: 200,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                    className="campus-map"
+                    style={mapStyle}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseMove={handleMouseMove}
+                    onClick={() => console.log("image click", coordinates)}
+                  >
+                    <Typography variant="h5" sx={{ mb: 2 }}>
+                      Campus Map{" "}
+                    </Typography>
+                    <Box
+                      sx={{
+                        mt: 2,
+
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      {buildings.length !== 0 &&
+                        buildings.map((building) => {
+                          let backgroundColor;
+                          if (!hoveredBuilding)
+                            backgroundColor = building.color;
+                          else if (
+                            hoveredBuilding &&
+                            hoveredBuilding === building
+                          ) {
+                            backgroundColor = building.color; // Set the background color to the original color if the building is hovered
+                          } else {
+                            backgroundColor = "grey"; // Set the background color to grey if no building is hovered or the building is not hovered
+                          }
+                          return (
+                            <Tooltip
+                              key={building?.number}
+                              title={
+                                <div
+                                  style={{ fontSize: "18px", padding: "10px" }}
+                                >
+                                  <div>Building Number: {building?.number}</div>
+                                  <div>
+                                    Subnet {building?.number}:{" "}
+                                    {hoveredBuilding?.ip}
+                                  </div>
+                                  {/* Add more lines as needed */}
+                                </div>
+                              }
+                              arrow
+                              placement="top"
+                            >
+                              <Box
+                                sx={{
+                                  width: 150,
+                                  height: 70,
+                                  backgroundColor,
+                                  color: "black",
+                                  fontFamily: "sans-serif",
+                                  fontWeight: "bold",
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  margin: "5px",
+                                  cursor: "pointer",
+                                }}
+                                onMouseEnter={() =>
+                                  setHoveredBuilding(building)
+                                }
+                                onMouseLeave={() => setHoveredBuilding(null)}
+                              >
+                                Building {building?.number}
+                              </Box>
+                            </Tooltip>
+                          );
+                        })}
+                    </Box>
+                  </Paper>
+                </Tooltip>
+              </Grid>
+
+
+
+
+
+
+
+
+
+
               <Grid item xs={12}>
                 <Paper
                   sx={{
                     p: 2,
-                    height: 200,
+                    height: 'calc(65vh - 64px)',
                     display: "flex",
                     flexDirection: "column",
-                    position: 'relative', 
                   }}
                 >
                   <Typography variant="h5" sx={{ mb: 2 }}>
-                    Campus Map{" "}
+                    Building connections
                   </Typography>
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      height: '100%', 
-                      '&::after': { 
-                        content: '""',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundImage: `url(${campusMapImage})`,
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        opacity: 0.5, 
-                        zIndex: 1, 
-                      },
-                    }}
-                  />
-                  {/* Buttons container */}
-                  <Box
-                    sx={{
-                      mt: 2,
-                      display: "flex",
-                      justifyContent: "space-between",
-                      position: 'relative', 
-                      zIndex: 2, 
-                    }}
-                  >
-                    {buildings.length !== 0 &&
-                      buildings.map((building) => {
-                        let backgroundColor;
-                        if (!hoveredBuilding) backgroundColor = building.color;
-                        else if (
-                          hoveredBuilding &&
-                          hoveredBuilding === building
-                        ) {
-                          backgroundColor = building.color; 
-                        } else {
-                          backgroundColor = "grey"; 
-                        }
-                        return (
-                          <Tooltip
-                            key={building?.number}
-                            title={
-                              <div
-                                style={{ fontSize: "18px", padding: "10px" }}
-                              >
-                                <div>Building Number: {building?.number}</div>
-                                <div>
-                                  Subnet {building?.number}:{" "}
-                                  {hoveredBuilding?.ip}
-                                </div>
-                              </div>
-                            }
-                            arrow
-                            placement="top"
-                          >
-                            <Box
-                              sx={{
-                                width: 150,
-                                height: 70,
-                                backgroundColor,
-                                color: "black",
-                                fontFamily: "sans-serif",
-                                fontWeight: "bold",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                margin: "5px",
-                                cursor: "pointer",
-                              }}
-                              onMouseEnter={() => setHoveredBuilding(building)}
-                              onMouseLeave={() => setHoveredBuilding(null)}
-                            >
-                              <AccountBalanceIcon sx={{ mr: 1 }} />
-                              {building?.number}
-                            </Box>
-                          </Tooltip>
-                        );
-                      })}
-                  </Box>
-                </Paper>
-              </Grid>
-
-            </Grid>
-            <Grid container spacing={2} justifyContent="space-between">
-              <Grid item xs={12} md={5} lg={5}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 340,
-                  }}
-                >
-                  {" "}
-                  <Typography variant="h5" sx={{ mb: 2 }}>
-                    Wireless Map{" "}
-                  </Typography>
-                  <Box
-                    sx={{
-                      mt: 2,
-
-                      display: "flex",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {floorsArray.map((floor) => (
-                      <Box
-                        sx={{
-                          width: 120, // Increased box size
-                          height: 50, // Increased box size
-                          backgroundColor: `${floor.color}`, // Random background color
-                          color: "black",
-                          fontFamily: "sans-serif",
-
-                          fontWeight: "bold",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          margin: "5px",
-                          cursor: "pointer",
-                          border:
-                            selectedFloor?.floorName === floor.floorName
-                              ? "3px solid black"
-                              : "none",
-                          borderRadius: "5px",
-                        }}
-                        onClick={() => handleFloorClick(floor)}
-                      >
-                        <ApartmentIcon sx={{ mr: 1 }} /> {floor.number}
-                      </Box>
-                    ))}
-                  </Box>
-                </Paper>
-              </Grid>
-              <Grid item xs={12} md={5} lg={5}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 340,
-                  }}
-                >
-                  {" "}
-                  <Typography variant="h5" sx={{ mb: 2 }}>
-                    Closet Idf{" "}
-                  </Typography>
+                  {/* Here is the Cytoscape graph */}
+                  <CytoscapeComponent />
                 </Paper>
               </Grid>
             </Grid>
+
           </Container>
         </Box>
       </Box>
