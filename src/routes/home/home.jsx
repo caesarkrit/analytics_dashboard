@@ -24,6 +24,7 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import campusMapImage from './image.JPG';
 import {
   mainListItems,
   secondaryListItems,
@@ -31,6 +32,41 @@ import {
 // import GraphComponent from "../../components/graphComponent/graphComponent";
 
 const drawerWidth = 240;
+
+
+const invisibleButtonStyle = {
+  position: 'absolute',
+  width: '50px', // Set width
+  height: '50px', // Set height
+  background: 'rgba(255, 0, 0, 0.5)', // Semi-transparent background for testing
+  border: 'none',
+  cursor: 'pointer',
+};
+
+const ClickableBuilding = ({ building, onBuildingClick, hoveredBuilding, setHoveredBuilding }) => {
+  const handleMouseEnter = () => {
+    setHoveredBuilding(building.number); // Or use another unique identifier of the building
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredBuilding(null);
+  };
+
+  return (
+    <button
+      style={{
+        ...invisibleButtonStyle,
+        left: building.mapX, // X coordinate on the image
+        top: building.mapY, // Y coordinate on the image
+        // Apply styles based on hover state
+        backgroundColor: hoveredBuilding === building.number ? 'rgba(255, 0, 0, 0.5)' : 'transparent',
+      }}
+      onClick={() => onBuildingClick(building)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    />
+  );
+};
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -494,6 +530,7 @@ export default function Home() {
                     height: 200,
                     display: "flex",
                     flexDirection: "column",
+                    position: 'relative', 
                   }}
                 >
                   <Typography variant="h5" sx={{ mb: 2 }}>
@@ -501,10 +538,35 @@ export default function Home() {
                   </Typography>
                   <Box
                     sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      height: '100%', 
+                      '&::after': { 
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundImage: `url(${campusMapImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        opacity: 0.5, 
+                        zIndex: 1, 
+                      },
+                    }}
+                  />
+                  {/* Buttons container */}
+                  <Box
+                    sx={{
                       mt: 2,
-
                       display: "flex",
                       justifyContent: "space-between",
+                      position: 'relative', 
+                      zIndex: 2, 
                     }}
                   >
                     {buildings.length !== 0 &&
@@ -515,9 +577,9 @@ export default function Home() {
                           hoveredBuilding &&
                           hoveredBuilding === building
                         ) {
-                          backgroundColor = building.color; // Set the background color to the original color if the building is hovered
+                          backgroundColor = building.color; 
                         } else {
-                          backgroundColor = "grey"; // Set the background color to grey if no building is hovered or the building is not hovered
+                          backgroundColor = "grey"; 
                         }
                         return (
                           <Tooltip
@@ -531,7 +593,6 @@ export default function Home() {
                                   Subnet {building?.number}:{" "}
                                   {hoveredBuilding?.ip}
                                 </div>
-                                {/* Add more lines as needed */}
                               </div>
                             }
                             arrow
@@ -563,6 +624,7 @@ export default function Home() {
                   </Box>
                 </Paper>
               </Grid>
+
             </Grid>
             <Grid container spacing={2} justifyContent="space-between">
               <Grid item xs={12} md={5} lg={5}>
