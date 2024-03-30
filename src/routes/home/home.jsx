@@ -395,6 +395,7 @@ export default function Home() {
                           backgroundColor = building.color; // Set the background color to the original color if the building is hovered
                         } else {
                           backgroundColor = "grey"; // Set the background color to grey if no building is hovered or the building is not hovered
+                          console.log("not hovered");
                         }
                         return (
                           <Box
@@ -590,7 +591,7 @@ export default function Home() {
                   </Paper>
                 </Tooltip>
               </Grid>
-
+              <Grid item xs={12}>
                 <Paper
                   sx={{
                     p: 2,
